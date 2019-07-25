@@ -1,16 +1,18 @@
-class SubTotal {
-  calculate(itemsArray) {
-    const items = itemsArray;
-    // iterate through the array of item objects and calculate the sub total and vat
-    const itemsWithSubTotals = items.map((item) => {
-      const newEntry = item;
-      newEntry.sub_total = newEntry.quantity * newEntry.unit_price;
-      newEntry.sub_vat = newEntry.quantity * newEntry.unit_vat;
-      return newEntry;
-    });
+const subTotal = itemsArray => {
+	const itemsWithSubTotals = itemsArray.map(item => {
+		const { product_id, quantity, unit_price, unit_vat } = item;
+		const newEntry = {
+			product_id,
+			quantity,
+			unit_price,
+			unit_vat,
+			sub_total: quantity * unit_price,
+			sub_vat: quantity * unit_vat,
+		};
+		return newEntry;
+	});
 
-    return itemsWithSubTotals;
-  }
-}
+	return itemsWithSubTotals;
+};
 
-module.exports = SubTotal;
+module.exports = subTotal;
