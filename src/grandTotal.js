@@ -1,11 +1,9 @@
-const grandTotal = invoice => {
-	const { items } = invoice.invoice;
-
-	const finalOrderNet = items.reduce(
+const grandTotal = itemsWithSubTotals => {
+	const finalOrderNet = itemsWithSubTotals.reduce(
 		(subTotalOne, subTotalTwo) => subTotalOne + subTotalTwo.sub_total,
 		0,
 	);
-	const finalOrderVat = items.reduce(
+	const finalOrderVat = itemsWithSubTotals.reduce(
 		(subVatOne, subVatTwo) => subVatOne + subVatTwo.sub_vat,
 		0,
 	);
@@ -15,7 +13,7 @@ const grandTotal = invoice => {
 			order_net: finalOrderNet,
 			order_vat: finalOrderVat,
 			order_gross: finalOrderNet + finalOrderVat,
-			items,
+			items: itemsWithSubTotals,
 		},
 	};
 	return finalInvoice;

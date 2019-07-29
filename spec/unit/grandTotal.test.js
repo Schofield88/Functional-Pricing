@@ -2,12 +2,7 @@ const grandTotal = require('../../src/grandTotal');
 
 describe('GrandTotal', () => {
 	it('calulates the various order totals', () => {
-		const invoice = {
-			invoice: {
-				order_net: 0,
-				order_vat: 0,
-				order_gross: 0,
-				items: [
+		const itemsWithSubTotals = [
 					{
 						product_id: 1,
 						quantity: 1,
@@ -32,9 +27,8 @@ describe('GrandTotal', () => {
 						sub_total: 250,
 						sub_vat: 0,
 					},
-				],
-			},
-		};
+				];
+
 
 		const finalInvoice = {
 			invoice: {
@@ -70,6 +64,6 @@ describe('GrandTotal', () => {
 			},
 		};
 
-		expect(grandTotal(invoice)).toEqual(finalInvoice);
+		expect(grandTotal(itemsWithSubTotals)).toEqual(finalInvoice);
 	});
 });
