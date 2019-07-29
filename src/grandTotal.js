@@ -1,10 +1,11 @@
 const grandTotal = itemsWithSubTotals => {
 	const finalOrderNet = itemsWithSubTotals.reduce(
-		(subTotalOne, subTotalTwo) => subTotalOne + subTotalTwo.sub_total,
+		(subTotalAccumulator, subTotalTwo) =>
+			subTotalAccumulator + subTotalTwo.sub_total,
 		0,
 	);
 	const finalOrderVat = itemsWithSubTotals.reduce(
-		(subVatOne, subVatTwo) => subVatOne + subVatTwo.sub_vat,
+		(subVatAccumulator, subVatTwo) => subVatAccumulator + subVatTwo.sub_vat,
 		0,
 	);
 

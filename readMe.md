@@ -1,3 +1,43 @@
+# Pricing Data API - Functional Edition
+
+## Objective
+
+To re-write an API I'd coded previously (original readMe for that project at the end) in JavaScript along Functional Programming lines.
+
+## What The Hell Was I Thinking
+
+Functional programming is not something I'm trained in, but I did encounter it at Makers - in the middle of the course it was suggested in my morning article digest by Medium. I had no idea at that time that the Object-Oriented paradigm was not the only way to write code, and struggled to get my head around pretty much everything the article was saying.
+
+However, given that I chose to retrain my touch typing to a Dvorak layout many years ago, after reading one article on alternate keyboard maps, I was probably doomed from the start. I bookmarked a number of FP articles and promised myself that I'd eventually get round to poking the subject with a stick.
+
+The time has come round.
+
+## What The Hell Have I Done
+
+I'd previously built a simple API, designed along OO lines, as an exploratory jaunt into REST and web apps, which would serve as a perfect vehicle to re-write as Functional due to the simplicity of the business logic. When I was coding the thing the first time around, I noticed that a couple of the classes I'd used were only there to support a single method. They were also stateless (as ESLint insisted on constantly pointed out). This felt like a dose of extra code just to get at something that could easily be a single function: the class supporting the method needed to be written, then instantiated and called in the endpoint's controlled function.
+
+During the re-write I also noticed that my previous solution went round the houses a touch, and so chose to strip out a number of steps at the same time. The app now follows four steps:
+
+- The items array on the order request is passed into price(), which returns an array of objects to include the pricing data for each order item
+- That return is passed to subtotal(), which calculates the various subtotals and returns the further developed items array
+- The array is passed to grandTotal(), that calculates the various order totals and returns an assembled response object
+- This invoice object is sent back to the client as the response
+
+## Functional Principles I've Attempted To Not Muff Up
+
+- _Use of pure functions:_ As far as possible, the functions used here are pure, in that they only act on the arguments passed into them with no side effects. Some impure functions are necessary, of course, because the app recovers pricing data from an external json source (represented here by the pricing.json file in the project root) using a synchronous Node function.
+- _No mutable state:_ No variables were mutated in the writing of this app. This had the rather curious effect of making the code much more explicit in some places: namely, because price() and subTotal() build and return an object, the structure of the object is present in the code itself. This massively enhances the readability of the code for someone coming after.
+- _No loops:_ Any iteration is handled with methods such as map() and reduce().
+- _Function composition:_ The response of the app is built on a chain of three functions, in which the output of one is the argument of the next. Initially, in the orderController the final invoice object was built thus:
+  `const final = grandTotal(subTotal(price(orderJson)))`
+  which was rubbish. Function composition is the correct way to chain functions in this manner, which makes use of the higher order function compose() on line 7. NB: this was not my code. However, the result is correct application of function composition.
+
+## Known Issues
+
+The price function is currently tightly coupled with getPriceAndVat(). The test for this function, then, is technically an integration test and is not correctly isolated.
+
+_(Original ReadMe below)_
+
 # Pricing Data API
 
 ## Objective
@@ -81,7 +121,7 @@ The testing framework for this solution was Jest, chosen over Jasmine simply bec
 
 To run the tests, at the command line type:
 
-`npm tests`
+`npm test`
 
 to run the Jest script. Please note that this will start Jest in Watch mode; press 'q' to exit.
 
