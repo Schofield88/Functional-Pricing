@@ -1,8 +1,8 @@
-const Pricer = require('../../src/price');
+const price = require('../../src/price');
 
 describe('Pricer', () => {
 	it('adds the pricing data to the array', () => {
-		const pricer = new Pricer();
+
 		const items = [
 			{
 				product_id: 1,
@@ -38,6 +38,6 @@ describe('Pricer', () => {
 			},
 		];
 
-		expect(pricer.price(items)).toEqual(itemsWithPrice);
+		expect(price(items)).toEqual(itemsWithPrice);
 	});
 });
