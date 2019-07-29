@@ -1,23 +1,24 @@
-class GrandTotal {
-  calculate(invoice) {
-    const finalInvoice = invoice;
-    const itemsArray = finalInvoice.invoice.items;
-    let orderNet = 0;
-    let orderVat = 0;
-    // calculate totals from items array subtotals
-    itemsArray.forEach((element) => {
-      orderNet += element.sub_total;
-      orderVat += element.sub_vat;
-    });
+const grandTotal = invoice => {
+	const { items } = invoice.invoice;
 
-    const orderGross = orderNet + orderVat;
-    // assign final net, gross and vat
-    finalInvoice.invoice.order_net = orderNet;
-    finalInvoice.invoice.order_vat = orderVat;
-    finalInvoice.invoice.order_gross = orderGross;
+	const finalOrderNet = items.reduce(
+		(subTotalOne, subTotalTwo) => subTotalOne + subTotalTwo.sub_total,
+		0,
+	);
+	const finalOrderVat = items.reduce(
+		(subVatOne, subVatTwo) => subVatOne + subVatTwo.sub_vat,
+		0,
+	);
 
-    return finalInvoice;
-  }
-}
+	const finalInvoice = {
+		invoice: {
+			order_net: finalOrderNet,
+			order_vat: finalOrderVat,
+			order_gross: finalOrderNet + finalOrderVat,
+			items,
+		},
+	};
+	return finalInvoice;
+};
 
-module.exports = GrandTotal;
+module.exports = grandTotal;
