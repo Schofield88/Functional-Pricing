@@ -6,7 +6,6 @@ const grandTotal = require('../src/grandTotal');
 exports.process = (req, res, next) => {
 	const price = new Price();
 	const items = new Items(price, subTotal);
-	const grandTotal = new GrandTotal();
 
 	const orderJson = req.body.order.items;
 	const customer = {
